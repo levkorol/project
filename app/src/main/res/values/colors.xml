@@ -3,4 +3,13 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#FDEBE7F9</color>
+
+    <color name="purpul">#D5ADFB</color>
+    <color name="pink">#F1236D</color>
+    <color name="light_pink">#EE7BA4</color>
+
+    <color name="opasity_white35">#4DFFFFFF</color>
+    <color name="opasity_white15">#26FFFFFF</color>
+
+    <color name="dark_blu">#133072</color>
 </resources>

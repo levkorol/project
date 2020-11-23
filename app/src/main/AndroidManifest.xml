@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.leokorol.testlove">
+        package="com.leokorol.testlove">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
             android:allowBackup="true"
@@ -13,31 +13,21 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".HoroscopeActivity">
-        </activity>
-        <activity android:name=".ResultsActivity">
-        </activity>
-        <activity android:name=".WaitForPartner">
-        </activity>
-        <activity android:name=".TestThreeQuestions">
-        </activity>
-        <activity android:name=".TestTwoQuestions">
-        </activity>
-        <activity android:name=".TestOne">
-        </activity>
-        <activity android:name=".TestThreeActivity">
-        </activity>
-        <activity android:name=".TestTwoActivity">
-        </activity>
-        <activity android:name=".TestOneTitle">
-        </activity>
+        <activity android:name=".activites.menu.TogetherEnterNameActivity"></activity>
+        <activity android:name=".activites.menu.InterestingActivity" />
+        <activity android:name=".activites.menu.ConnectActivity" />
+        <activity android:name=".activites.splash.SplashActivity" />
+        <activity android:name=".activites.results.ResultsActivity" />
+        <activity android:name=".activites.results.WaitForPartner" />
+        <activity android:name=".activites.tests.TestThreeQuestions" />
+        <activity android:name=".activites.tests.TestTwoQuestions" />
+        <activity android:name=".activites.tests.TestOneQuestions" />
+        <activity android:name=".activites.menu.MenuTestsActivity" />
         <activity android:name=".MenuActivity">
-        </activity>
-        <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
