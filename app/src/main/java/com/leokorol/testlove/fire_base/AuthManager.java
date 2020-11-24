@@ -1,5 +1,7 @@
 package com.leokorol.testlove.fire_base;
 
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -7,6 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.leokorol.testlove.TestApp;
 import com.leokorol.testlove.base.IAnswersReceivedListener;
 import com.leokorol.testlove.base.ISimpleListener;
 import com.leokorol.testlove.model.AnswerVariant;
@@ -17,13 +20,13 @@ import java.util.List;
 import java.util.Random;
 
 public class AuthManager {
-    private String _deviceId;
-    private String _code;
-    private String _sessionCode;
+//    private String _deviceId;
+//    private String _code;
+    private String _sessionCode = null;
     private static final AuthManager _instance = new AuthManager();
     private boolean _isInQueue;
-    private boolean _isConnectedToPartner;
-    private int _currentPart;
+    private boolean _isConnectedToPartner = false;
+    private int _currentPart = 0;
     private boolean _isSubscribedToSessions;
     private ISimpleListener _partnerConnectedListener;
     private IAnswersReceivedListener _answers1ReceivedListener;
@@ -65,17 +68,18 @@ public class AuthManager {
         _currentPart = currentPart;
     }
 
-    public void resetSession() {
-        _deviceId = java.util.UUID.randomUUID().toString().toUpperCase();
-        _code = generateCode();
-        _sessionCode = null;
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference deviceIdRef = database.getReference("queue").child(_deviceId);
-        deviceIdRef.setValue(_code);
-        _isInQueue = true;
-        _isConnectedToPartner = false;
-        _currentPart = 0;
-    }
+    // удалить если все ок
+//    public void resetSession() {
+//        _deviceId = java.util.UUID.randomUUID().toString().toUpperCase();
+//        _code = generateCode();
+//        _sessionCode = null;
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference deviceIdRef = database.getReference("queue").child(_deviceId);
+//        deviceIdRef.setValue(_code);
+//        _isInQueue = true;
+//        _isConnectedToPartner = false;
+//        _currentPart = 0;
+//    }
 
     public void sendAnswers(AnswerVariant[][] answers, String answersBranch) {
         List<List<Object>> selfAnswers = new ArrayList<>();
@@ -84,7 +88,7 @@ public class AuthManager {
         final DatabaseReference sessionsRef = database.getReference("sessions");
         final DatabaseReference sessionRef = sessionsRef.child(_sessionCode);
         final DatabaseReference answersRef = sessionRef.child(answersBranch);
-        final DatabaseReference idRef = answersRef.child(_deviceId);
+        final DatabaseReference idRef = answersRef.child(getDeviceId());
         for (int iQuestion = 0; iQuestion < answers.length; iQuestion++) {
             selfAnswers.add(getAnswerNumbers(answers[iQuestion]));
         }
@@ -115,7 +119,7 @@ public class AuthManager {
                 }
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     String sessionCode = snapshot.getKey();
-                    if (sessionCode.contains(_code)) {
+                    if (sessionCode.contains(getCode())) {
                         _sessionCode = sessionCode;
                         sessionsRef.child(sessionCode).child("user1").setValue(231);
                         if (_partnerConnectedListener != null) {
@@ -177,7 +181,7 @@ public class AuthManager {
                     List<List<Object>> selfAnswers = new ArrayList<>();
                     List<List<Object>> partnerAnswers = new ArrayList<>();
                     for (Object key : hm.keySet()) {
-                        if (key.toString().equals(_deviceId)) {
+                        if (key.toString().equals(getDeviceId())) {
                             selfAnswers = (List<List<Object>>)hm.get(key);
                         } else {
                             partnerAnswers = (List<List<Object>>)hm.get(key);
@@ -220,8 +224,8 @@ public class AuthManager {
                     }
                 }
                 if (found) {
-                    _sessionCode = _code + "_" + partnerCode;
-                    queueRef.child(_deviceId).removeValue();
+                    _sessionCode = getCode() + "_" + partnerCode;
+                    queueRef.child(getDeviceId()).removeValue();
                     queueRef.child(foundId).removeValue();
                     sessionsRef.child(_sessionCode).child("user2").setValue(123);
                     if (successListener != null) {
@@ -241,22 +245,12 @@ public class AuthManager {
         });
     }
 
-    private static String generateCode() {
-        String result = "";
-        String str = "abcdefghijklmnopqrstuvwxyz1234567890";
-        Random r = new Random(System.currentTimeMillis());
-        for (int i = 0; i < 12; i++) {
-            result += str.charAt(r.nextInt(str.length()));
-        }
-        return result;
-    }
-
     public String getDeviceId() {
-        return _deviceId;
+        return TestApp.getSharedPref().getString(TestApp.getDEVICE_ID(), "");
     }
 
     public String getCode() {
-        return _code;
+        return TestApp.getSharedPref().getString(TestApp.getCODE(), "");
     }
 
     public static AuthManager getInstance() {

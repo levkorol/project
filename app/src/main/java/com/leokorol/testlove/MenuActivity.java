@@ -43,9 +43,9 @@ public final class MenuActivity extends AppCompatActivity {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
             AuthManager.getInstance().subscribeToSessions();
-            if (!AuthManager.getInstance().isInQueue()) {
-                AuthManager.getInstance().resetSession();
-            }
+//            if (!AuthManager.getInstance().isInQueue()) {
+//                AuthManager.getInstance().resetSession();
+//            }
 
             Intent intent = new Intent(this, ConnectActivity.class);
             startActivity(intent);
