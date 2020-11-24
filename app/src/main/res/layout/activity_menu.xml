@@ -95,9 +95,9 @@
             android:orientation="horizontal">
 
         <LinearLayout
+                android:id="@+id/btnGoConnectActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="goConnectActivity"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:paddingStart="31dp"
@@ -121,10 +121,10 @@
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/btnGoMenuTestsActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:onClick="goToNextActivity"
                 android:orientation="vertical"
                 android:paddingStart="25dp"
                 android:paddingTop="8dp"
@@ -158,9 +158,9 @@
             android:orientation="horizontal">
 
         <LinearLayout
+                android:id="@+id/btnGoTogetherTestsActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="goTogetherActivity"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:paddingStart="26dp"
@@ -189,10 +189,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:onClick="goInteresting"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:paddingStart="43dp">
+                android:paddingStart="43dp"
+                android:paddingEnd="43dp">
 
             <ImageView
                     android:layout_width="wrap_content"

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,13 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MenuTestsActivity extends AppCompatActivity {
-    private LinearLayout _llIntresting;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_tests_menu);
-        _llIntresting = findViewById(R.id.partner);
 
         AuthManager.getInstance().setAnswers1ReceivedListener(new IAnswersReceivedListener() {
             @Override
@@ -66,7 +63,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
         });
     }
 
-
     private static int getEqualAnswersCount(List<List<Object>> selfAnswers, List<List<Object>> partnerAnswers) {
         int result = 0;
         for (int i = 0; i < selfAnswers.size(); i++) {
@@ -77,12 +73,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
             result += intersection.size();
         }
         return result;
-    }
-
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     public void goToTestOneTitle(View view) {
@@ -98,7 +88,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
 
     }
 
-
     public void goToTestThreeActivity(View view) {
         AuthManager.getInstance().setCurrentPart(3);
         Intent intent = new Intent(this, TestThreeQuestions.class);
@@ -108,5 +97,11 @@ public final class MenuTestsActivity extends AppCompatActivity {
     public void goMenu(View view) {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+    }
+
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

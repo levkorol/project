@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,9 +25,42 @@ public final class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         this.setContentView(R.layout.activity_menu);
+        LinearLayout goConnectActivity = findViewById(R.id.btnGoConnectActivity);
+        final LinearLayout goMenuTestsActivity = findViewById(R.id.btnGoMenuTestsActivity);
+        LinearLayout goTogetherActivity = findViewById(R.id.btnGoTogetherTestsActivity);
+        final LinearLayout goInterestingActivity = findViewById(R.id.goIntresting);
+
+        goConnectActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goConnectActivity();
+            }
+        });
+
+        goMenuTestsActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToTestsActivity();
+            }
+        });
+
+        goTogetherActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goTogetherActivity();
+            }
+        });
+
+        goInterestingActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goInteresting();
+            }
+        });
+
     }
 
-    public void goToNextActivity(View view) {
+    public void goToTestsActivity() {
         //  if (AuthManager.getInstance().getIsConnectedToPartner()) { //todo закрыть доступ если не подсоеденены
         Intent intent = new Intent(this, MenuTestsActivity.class);
         this.startActivity(intent);
@@ -35,10 +69,10 @@ public final class MenuActivity extends AppCompatActivity {
         // }
     }
 
-    public void goConnectActivity(View view) {
+    private void goConnectActivity() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        assert cm != null;
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
@@ -56,12 +90,12 @@ public final class MenuActivity extends AppCompatActivity {
         }
     }
 
-    public void goInteresting(View view) {
+    public void goInteresting() {
         Intent intent = new Intent(this, InterestingActivity.class);
         startActivity(intent);
     }
 
-    public void goTogetherActivity(View view) {
+    public void goTogetherActivity() {
         Intent intent = new Intent(this, TogetherEnterNameActivity.class);
         startActivity(intent);
     }
