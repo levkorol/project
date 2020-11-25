@@ -130,7 +130,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
         }
     }
 
-
     private static int getEqualAnswersCount(List<List<Object>> selfAnswers, List<List<Object>> partnerAnswers) {
         int result = 0;
         for (int i = 0; i < selfAnswers.size(); i++) {
@@ -141,12 +140,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
             result += intersection.size();
         }
         return result;
-    }
-
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     public void goToTestOneTitle(View view) {
@@ -162,7 +155,6 @@ public final class MenuTestsActivity extends AppCompatActivity {
 
     }
 
-
     public void goToTestThreeActivity(View view) {
         AuthManager.getInstance().setCurrentPart(3);
         Intent intent = new Intent(this, TestThreeQuestions.class);
@@ -172,5 +164,11 @@ public final class MenuTestsActivity extends AppCompatActivity {
     public void goMenu(View view) {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+    }
+
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

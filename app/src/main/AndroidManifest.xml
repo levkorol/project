@@ -17,7 +17,14 @@
         <activity android:name=".activites.menu.TogetherEnterNameActivity"></activity>
         <activity android:name=".activites.menu.InterestingActivity" />
         <activity android:name=".activites.menu.ConnectActivity" />
-        <activity android:name=".activites.splash.SplashActivity" />
+        <activity android:name=".activites.splash.SplashActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activites.results.ResultsActivity" />
         <activity android:name=".activites.results.WaitForPartner" />
         <activity android:name=".activites.tests.TestThreeQuestions" />
@@ -25,11 +32,11 @@
         <activity android:name=".activites.tests.TestOneQuestions" />
         <activity android:name=".activites.menu.MenuTestsActivity" />
         <activity android:name=".MenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
     </application>
 
