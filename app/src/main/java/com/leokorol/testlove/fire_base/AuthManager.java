@@ -66,6 +66,7 @@ public class AuthManager {
 
     public void setCurrentPart(int currentPart) {
         _currentPart = currentPart;
+        TestApp.sharedPreferences.edit().putInt(TestApp.LAST_PART, _currentPart).apply();
     }
 
     // удалить если все ок
@@ -225,6 +226,7 @@ public class AuthManager {
                 }
                 if (found) {
                     _sessionCode = getCode() + "_" + partnerCode;
+                    TestApp.sharedPreferences.edit().putString(TestApp.SESSiON_CODE, _sessionCode).apply();
                     queueRef.child(getDeviceId()).removeValue();
                     queueRef.child(foundId).removeValue();
                     sessionsRef.child(_sessionCode).child("user2").setValue(123);

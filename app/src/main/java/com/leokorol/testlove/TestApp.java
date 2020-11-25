@@ -26,11 +26,14 @@ public class TestApp extends Application {
         return CODE;
     }
 
-    static final String DEVICE_ID = "DEVICE_ID";
-    static final String CODE = "CODE";
+    public static final String DEVICE_ID = "DEVICE_ID";
+    public static final String CODE = "CODE";
+    public static final String SESSiON_CODE = "SESSiON_CODE";
+    public static final String LAST_QUESTION = "LAST_QUESTION";
+    public static final String LAST_PART = "LAST_PART";
 
     private static Context context;
-    static SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate() {

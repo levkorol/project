@@ -6,6 +6,6 @@ import com.leokorol.testlove.tests.texts.Questions;
 
 public class TestOneQuestions extends BaseTestQuestionsActivity {
     public TestOneQuestions() {
-        super(Questions.Part1, R.layout.activity_test_one, R.drawable.onetitlebg, "answers");
+        super(Questions.Part1, R.layout.activity_test_one, R.drawable.onetitlebg, ANSWERS);
     }
 }

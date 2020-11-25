@@ -70,7 +70,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingBottom="16dp"
-            android:text="Активная сессия Елена и Олег: 35/60"
+            android:text="Текущий прогресс: 35/60"
             android:textColor="@color/purpul" />
 
     <TextView
@@ -84,7 +84,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingBottom="16dp"
-            android:text="Удалить сессию"
+            android:text="Сбросить прогресс"
             android:textColor="@color/purpul" />
 
     <TextView

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.leokorol.testlove.R;
+import com.leokorol.testlove.TestApp;
 import com.leokorol.testlove.activites.menu.MenuTestsActivity;
 import com.leokorol.testlove.activites.results.WaitForPartner;
 import com.leokorol.testlove.fire_base.AuthManager;
@@ -25,10 +26,15 @@ public class BaseTestQuestionsActivity extends AppCompatActivity {
     private TextView _textViewNumberQuestion;
     private AnswerVariant[][] _allAnswerVariants;
     private int _currentQuestionIndex = 0;
+    private int _currentPart;
     private QuestionWithVariants[] _questions;
     private int _layoutId;
     private int _backgroundResource;
     private String _answersBranch;
+
+    public static final String ANSWERS = "answers";
+    public static final String ANSWERS_2 = "answers2";
+    public static final String ANSWERS_3 = "answers3";
 
     public BaseTestQuestionsActivity(QuestionWithVariants[] questions, int layoutId, int backgroundResource, String answersBranch) {
         _questions = questions;
@@ -85,6 +91,7 @@ public class BaseTestQuestionsActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             _currentQuestionIndex++;
+            TestApp.sharedPreferences.edit().putInt(TestApp.LAST_QUESTION, _currentQuestionIndex).apply();
             goToQuestion(_currentQuestionIndex);
         }
     }
