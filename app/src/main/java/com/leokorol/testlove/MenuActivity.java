@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.leokorol.testlove.activites.menu.ConnectActivity;
 import com.leokorol.testlove.activites.menu.InterestingActivity;
 import com.leokorol.testlove.activites.menu.MenuTestsActivity;
 import com.leokorol.testlove.activites.menu.TogetherEnterNameActivity;
+import com.leokorol.testlove.activites.menu.connect.ConnectActivity;
 import com.leokorol.testlove.fire_base.AuthManager;
 
 

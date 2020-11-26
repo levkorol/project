@@ -2,9 +2,9 @@ package com.leokorol.testlove.activites.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,15 +33,27 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class MenuTestsActivity extends AppCompatActivity {
-    private LinearLayout _llIntresting;
+    private LinearLayout _llPartner;
     private TextView progressPart1;
+    private TextView deleteProgress;
+    private ImageView goMenuActivity;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_tests_menu);
-        _llIntresting = findViewById(R.id.partner);
+        _llPartner = findViewById(R.id.partner);
         progressPart1 = findViewById(R.id.tvSessionInfoTest1);
+        goMenuActivity = findViewById(R.id.goMenuActivity);
+        deleteProgress = findViewById(R.id.tvSessionDeleteTest1);
+
+
+        goMenuActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goMenu();
+            }
+        });
 
         AuthManager.getInstance().setAnswers1ReceivedListener(new IAnswersReceivedListener() {
             @Override
@@ -85,7 +97,7 @@ public final class MenuTestsActivity extends AppCompatActivity {
         final String lastSession = TestApp.sharedPreferences.getString(TestApp.SESSiON_CODE, "");
         if (!lastSession.isEmpty()) {
             int lastQuestion = TestApp.sharedPreferences.getInt(TestApp.LAST_QUESTION, 0);
-            progressPart1.setText(String.valueOf(lastQuestion));
+            progressPart1.setText("Текущий прогресс: " + lastQuestion + "/65");
 
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -161,7 +173,7 @@ public final class MenuTestsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goMenu(View view) {
+    private void goMenu() {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
