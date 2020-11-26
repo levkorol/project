@@ -1,29 +1,6 @@
-package com.leokorol.testlove.tests.texts;
+package com.leokorol.testlove.tests.texts
 
-public class QuestionWithVariants {
-    private String _question;
-    private String[] _answerVariants;
-    private String _answer;
+class QuestionWithVariants(val question: String, val answerVariants: Array<String>) {
+    var answer: String? = null
 
-    public QuestionWithVariants(String question, String[] answerVariants)
-    {
-        _question = question;
-        _answerVariants = answerVariants;
-    }
-
-    public String getQuestion() {
-        return _question;
-    }
-
-    public String[] getAnswerVariants() {
-        return _answerVariants;
-    }
-
-    public String getAnswer() {
-        return _answer;
-    }
-
-    public void setAnswer(String answer) {
-        _answer = answer;
-    }
 }

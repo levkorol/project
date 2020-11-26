@@ -1,72 +1,61 @@
-package com.leokorol.testlove.tests.recycler_view;
+package com.leokorol.testlove.tests.recycler_view
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.recyclerview.widget.RecyclerView
+import com.leokorol.testlove.R
+import com.leokorol.testlove.model.AnswerVariant
+import com.leokorol.testlove.tests.recycler_view.AnswerVariantAdapter.AnswerVariantViewHolder
+import java.util.*
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.leokorol.testlove.R;
-import com.leokorol.testlove.model.AnswerVariant;
-
-import java.util.LinkedList;
-
-public class AnswerVariantAdapter extends RecyclerView.Adapter<AnswerVariantAdapter.AnswerVariantViewHolder> {
-    private AnswerVariant[] _answerVariants;
-    private LinkedList<AnswerVariant> _lastCheckedVariants = new LinkedList<>();
-
-    public AnswerVariantAdapter(AnswerVariant[] answerVariants) {
-        _answerVariants = answerVariants;
+class AnswerVariantAdapter(private val _answerVariants: Array<AnswerVariant>) :
+    RecyclerView.Adapter<AnswerVariantViewHolder>() {
+    private val _lastCheckedVariants = LinkedList<AnswerVariant>()
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): AnswerVariantViewHolder {
+        val v = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.layout_answer_variant, viewGroup, false)
+        return AnswerVariantViewHolder(v)
     }
 
-    @NonNull
-    @Override
-    public AnswerVariantViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_answer_variant, viewGroup, false);
-        AnswerVariantViewHolder avvh = new AnswerVariantViewHolder(v);
-        return avvh;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final AnswerVariantViewHolder answerVariantViewHolder, int answerVariantIndex) {
-        final AnswerVariant av = _answerVariants[answerVariantIndex];
-        answerVariantViewHolder.checkBoxVariant.setText(av.getAnswerText());
-        answerVariantViewHolder.checkBoxVariant.setChecked(av.getIsChecked());
-        answerVariantViewHolder.checkBoxVariant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                av.setIsChecked(answerVariantViewHolder.checkBoxVariant.isChecked());
-                if (av.getIsChecked()) {
-                    _lastCheckedVariants.addLast(av);
-                } else {
-                    _lastCheckedVariants.remove(av);
-                }
-                while (_lastCheckedVariants.size() > 2) {
-                    _lastCheckedVariants.removeFirst();
-                }
-                for (int i = 0; i < _answerVariants.length; i++) {
-                    AnswerVariant a = _answerVariants[i];
-                    if (!_lastCheckedVariants.contains(a)) {
-                        a.setIsChecked(false);
-                    }
-                }
-                notifyDataSetChanged();
+    override fun onBindViewHolder(
+        answerVariantViewHolder: AnswerVariantViewHolder,
+        answerVariantIndex: Int
+    ) {
+        val av = _answerVariants[answerVariantIndex]
+        answerVariantViewHolder.checkBoxVariant.text = av.answerText
+        answerVariantViewHolder.checkBoxVariant.isChecked = av.isChecked
+        answerVariantViewHolder.checkBoxVariant.setOnClickListener {
+            av.isChecked = answerVariantViewHolder.checkBoxVariant.isChecked
+            if (av.isChecked) {
+                _lastCheckedVariants.addLast(av)
+            } else {
+                _lastCheckedVariants.remove(av)
             }
-        });
+            while (_lastCheckedVariants.size > 2) {
+                _lastCheckedVariants.removeFirst()
+            }
+            for (i in _answerVariants.indices) {
+                val a = _answerVariants[i]
+                if (!_lastCheckedVariants.contains(a)) {
+                    a.isChecked = false
+                }
+            }
+            notifyDataSetChanged()
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return _answerVariants.length;
+    override fun getItemCount(): Int {
+        return _answerVariants.size
     }
 
-    public static class AnswerVariantViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkBoxVariant;
-        AnswerVariantViewHolder(View itemView) {
-            super(itemView);
-            checkBoxVariant = (CheckBox)itemView.findViewById(R.id.checkBoxVariant);
+    class AnswerVariantViewHolder internal constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var checkBoxVariant: CheckBox
+
+        init {
+            checkBoxVariant = itemView.findViewById<View>(R.id.checkBoxVariant) as CheckBox
         }
     }
 }

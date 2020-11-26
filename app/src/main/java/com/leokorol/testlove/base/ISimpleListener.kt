@@ -1,5 +1,5 @@
-package com.leokorol.testlove.base;
+package com.leokorol.testlove.base
 
-public interface ISimpleListener {
-    void eventOccured();
+interface ISimpleListener {
+    fun eventOccured()
 }

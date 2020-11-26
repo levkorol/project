@@ -1,107 +1,109 @@
-package com.leokorol.testlove.activites.base_activity;
+package com.leokorol.testlove.activites.base_activity
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.content.Intent
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.leokorol.testlove.R
+import com.leokorol.testlove.TestApp
+import com.leokorol.testlove.activites.menu.MenuTestsActivity
+import com.leokorol.testlove.activites.results.WaitForPartner
+import com.leokorol.testlove.fire_base.AuthManager
+import com.leokorol.testlove.model.AnswerVariant
+import com.leokorol.testlove.tests.recycler_view.AnswerVariantAdapter
+import com.leokorol.testlove.tests.texts.QuestionWithVariants
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+open class BaseTestQuestionsActivity(
+    private val _questions: Array<QuestionWithVariants>,
+    private val _layoutId: Int,
+    private val _backgroundResource: Int,
+    private val _answersBranch: String
+) : AppCompatActivity() {
+    private var _recyclerView: RecyclerView? = null
+    private var _textViewQuestionText: TextView? = null
+    private var _textViewNumberQuestion: TextView? = null
+    private var _allAnswerVariants: Array<Array<AnswerVariant>>
+    private var _currentQuestionIndex = 0
+    private val _currentPart = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(_layoutId)
+        _recyclerView = findViewById<View>(R.id.recyclerView) as RecyclerView
+        _textViewQuestionText = findViewById<View>(R.id.textViewQuestionText) as TextView
+        _textViewNumberQuestion = findViewById<View>(R.id.textViewNumberQuestion) as TextView
+        val llm = LinearLayoutManager(this)
+        _recyclerView!!.layoutManager = llm
+        goToQuestion(0)
+    }
 
-import com.leokorol.testlove.R;
-import com.leokorol.testlove.TestApp;
-import com.leokorol.testlove.activites.menu.MenuTestsActivity;
-import com.leokorol.testlove.activites.results.WaitForPartner;
-import com.leokorol.testlove.fire_base.AuthManager;
-import com.leokorol.testlove.model.AnswerVariant;
-import com.leokorol.testlove.tests.recycler_view.AnswerVariantAdapter;
-import com.leokorol.testlove.tests.texts.QuestionWithVariants;
+    fun goToMenuActivity(view: View?) {
+        val intent = Intent(this, MenuTestsActivity::class.java)
+        startActivity(intent)
+    }
 
-public class BaseTestQuestionsActivity extends AppCompatActivity {
-    private RecyclerView _recyclerView;
-    private TextView _textViewQuestionText;
-    private TextView _textViewNumberQuestion;
-    private AnswerVariant[][] _allAnswerVariants;
-    private int _currentQuestionIndex = 0;
-    private int _currentPart;
-    private QuestionWithVariants[] _questions;
-    private int _layoutId;
-    private int _backgroundResource;
-    private String _answersBranch;
-
-    public static final String ANSWERS = "answers";
-    public static final String ANSWERS_2 = "answers2";
-    public static final String ANSWERS_3 = "answers3";
-
-    public BaseTestQuestionsActivity(QuestionWithVariants[] questions, int layoutId, int backgroundResource, String answersBranch) {
-        _questions = questions;
-        _layoutId = layoutId;
-        _backgroundResource = backgroundResource;
-        _answersBranch = answersBranch;
-        _allAnswerVariants = new AnswerVariant[_questions.length][];
-        for (int iQuestion = 0; iQuestion < _questions.length; iQuestion++) {
-            String[] answerVariants = _questions[iQuestion].getAnswerVariants();
-            _allAnswerVariants[iQuestion] = new AnswerVariant[answerVariants.length];
-            for (int iAnswer = 0; iAnswer < answerVariants.length; iAnswer++) {
-                _allAnswerVariants[iQuestion][iAnswer] = new AnswerVariant(answerVariants[iAnswer]);
+    private val countOfCheckedAnswers: Int
+        private get() {
+            var result = 0
+            for (i in 0 until _allAnswerVariants[_currentQuestionIndex].size) {
+                if (_allAnswerVariants[_currentQuestionIndex][i]!!.isChecked) {
+                    result++
+                }
             }
+            return result
         }
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(_layoutId);
-
-        _recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        _textViewQuestionText = (TextView) findViewById(R.id.textViewQuestionText);
-        _textViewNumberQuestion = (TextView) findViewById(R.id.textViewNumberQuestion);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        _recyclerView.setLayoutManager(llm);
-        goToQuestion(0);
-    }
-
-    public void goToMenuActivity(View view) {
-        Intent intent = new Intent(this, MenuTestsActivity.class);
-        startActivity(intent);
-    }
-
-    private int getCountOfCheckedAnswers() {
-        int result = 0;
-        for (int i = 0; i < _allAnswerVariants[_currentQuestionIndex].length; i++) {
-            if (_allAnswerVariants[_currentQuestionIndex][i].getIsChecked()) {
-                result++;
-            }
-        }
-        return result;
-    }
-
-    public void goToNextQuestion(View view) {
-        if (getCountOfCheckedAnswers() == 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Выберите 1-2 варианта ответа", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        } else if (_currentQuestionIndex == _questions.length - 1) {
-            AuthManager.getInstance().sendAnswers(_allAnswerVariants, _answersBranch);
-            Intent intent = new Intent(this, WaitForPartner.class);
-            intent.putExtra("Background", _backgroundResource);
-            startActivity(intent);
+    fun goToNextQuestion(view: View?) {
+        if (countOfCheckedAnswers == 0) {
+            val toast = Toast.makeText(
+                applicationContext,
+                "Выберите 1-2 варианта ответа",
+                Toast.LENGTH_SHORT
+            )
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        } else if (_currentQuestionIndex == _questions.size - 1) {
+            AuthManager.instance.sendAnswers(_allAnswerVariants, _answersBranch)
+            val intent = Intent(this, WaitForPartner::class.java)
+            intent.putExtra("Background", _backgroundResource)
+            startActivity(intent)
         } else {
-            _currentQuestionIndex++;
-            TestApp.sharedPreferences.edit().putInt(TestApp.LAST_QUESTION, _currentQuestionIndex).apply();
-            goToQuestion(_currentQuestionIndex);
+            _currentQuestionIndex++
+            TestApp.sharedPref?.edit()?.putInt(TestApp.LAST_QUESTION, _currentQuestionIndex)
+                ?.apply()
+            goToQuestion(_currentQuestionIndex)
         }
     }
 
-    private void goToQuestion(int numberQuestion) {
-        AnswerVariantAdapter ava = new AnswerVariantAdapter(_allAnswerVariants[_currentQuestionIndex]);
-        _recyclerView.setAdapter(ava);
-        ava.notifyDataSetChanged();
+    private fun goToQuestion(numberQuestion: Int) {
+        val ava = AnswerVariantAdapter(_allAnswerVariants[_currentQuestionIndex])
+        _recyclerView!!.adapter = ava
+        ava.notifyDataSetChanged()
+        _textViewQuestionText!!.text = _questions[numberQuestion].question
+        _textViewNumberQuestion!!.text =
+            (_currentQuestionIndex + 1).toString() + "/" + _questions.size
+    }
 
-        _textViewQuestionText.setText(_questions[numberQuestion].getQuestion());
-        _textViewNumberQuestion.setText((_currentQuestionIndex + 1) + "/" + _questions.length);
+    companion object {
+        const val ANSWERS = "answers"
+        const val ANSWERS_2 = "answers2"
+        const val ANSWERS_3 = "answers3"
+    }
+
+    init {
+//        _allAnswerVariants = arrayOfNulls(_questions.size)
+        _allAnswerVariants = emptyArray()
+        for (iQuestion in _questions.indices) {
+            val answerVariants = _questions[iQuestion].answerVariants
+//            _allAnswerVariants[iQuestion] = arrayOfNulls(answerVariants.size)
+            _allAnswerVariants[iQuestion] = emptyArray()
+            for (iAnswer in answerVariants.indices) {
+                _allAnswerVariants[iQuestion][iAnswer] = AnswerVariant(answerVariants[iAnswer])
+            }
+        }
     }
 }

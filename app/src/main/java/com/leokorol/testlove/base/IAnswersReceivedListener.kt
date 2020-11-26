@@ -1,7 +1,5 @@
-package com.leokorol.testlove.base;
+package com.leokorol.testlove.base
 
-import java.util.List;
-
-public interface IAnswersReceivedListener {
-    void answersReceived(List<List<Object>> selfAnswers, List<List<Object>> partnerAnswers);
+interface IAnswersReceivedListener {
+    fun answersReceived(selfAnswers: List<List<Any>>, partnerAnswers: List<List<Any>>)
 }

@@ -1,33 +1,22 @@
-package com.leokorol.testlove.activites.menu;
+package com.leokorol.testlove.activites.menu
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
+import android.content.Intent
+import android.os.Bundle
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.leokorol.testlove.MenuActivity
+import com.leokorol.testlove.R
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.leokorol.testlove.MenuActivity;
-import com.leokorol.testlove.R;
-
-public class InterestingActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_interesting);
-        ImageView goMenuActivity = findViewById(R.id.igoMenuActivity);
-
-        goMenuActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goMenu();
-            }
-        });
+class InterestingActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_interesting)
+        val goMenuActivity = findViewById<ImageView>(R.id.igoMenuActivity)
+        goMenuActivity.setOnClickListener { goMenu() }
     }
 
-    private void goMenu() {
-        Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
+    private fun goMenu() {
+        val intent = Intent(this, MenuActivity::class.java)
+        startActivity(intent)
     }
 }

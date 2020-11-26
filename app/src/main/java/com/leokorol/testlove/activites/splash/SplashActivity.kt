@@ -1,29 +1,21 @@
-package com.leokorol.testlove.activites.splash;
+package com.leokorol.testlove.activites.splash
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.leokorol.testlove.MenuActivity
+import com.leokorol.testlove.R
+import java.util.*
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.leokorol.testlove.MenuActivity;
-import com.leokorol.testlove.R;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class SplashActivity extends AppCompatActivity {
-
-    Timer timer;
-    TimerTask mTimerTask;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-
-        timer = new Timer();
-        mTimerTask = new MyTimerTask();
-        timer.schedule(mTimerTask, 2000);
+class SplashActivity : AppCompatActivity() {
+    var timer: Timer? = null
+    var mTimerTask: TimerTask? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
+        timer = Timer()
+        mTimerTask = MyTimerTask()
+        timer!!.schedule(mTimerTask, 2000)
 
 //        mStop.setOnClickListener(new OnClickListener(){
 //            @Override
@@ -31,14 +23,12 @@ public class SplashActivity extends AppCompatActivity {
 
 //            }
 //        });
-
     }
 
-    class MyTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            Intent intent = new Intent(SplashActivity.this, MenuActivity.class);
-            startActivity(intent);
+    internal inner class MyTimerTask : TimerTask() {
+        override fun run() {
+            val intent = Intent(this@SplashActivity, MenuActivity::class.java)
+            startActivity(intent)
         }
     }
 }
