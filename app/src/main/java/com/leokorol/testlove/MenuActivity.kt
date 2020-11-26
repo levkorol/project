@@ -3,10 +3,18 @@ package com.leokorol.testlove
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.leokorol.testlove.activites.menu.InterestingActivity
 import com.leokorol.testlove.activites.menu.MenuTestsActivity
 import com.leokorol.testlove.activites.menu.TogetherEnterNameActivity
@@ -14,6 +22,9 @@ import com.leokorol.testlove.activites.menu.connect.ConnectActivity
 import com.leokorol.testlove.fire_base.AuthManager
 
 class MenuActivity : AppCompatActivity() {
+
+    private lateinit var disconnectButton: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
@@ -22,10 +33,57 @@ class MenuActivity : AppCompatActivity() {
         val goMenuTestsActivity = findViewById<LinearLayout>(R.id.btnGoMenuTestsActivity)
         val goTogetherActivity = findViewById<LinearLayout>(R.id.btnGoTogetherTestsActivity)
         val goInterestingActivity = findViewById<LinearLayout>(R.id.goIntresting)
+
         goConnectActivity.setOnClickListener { goConnectActivity() }
         goMenuTestsActivity.setOnClickListener { goToTestsActivity() }
         goTogetherActivity.setOnClickListener { goTogetherActivity() }
         goInterestingActivity.setOnClickListener { goInteresting() }
+
+        whatMyName()
+
+        setupDisconnectButton()
+    }
+
+    fun setupDisconnectButton() {
+        disconnectButton = findViewById(R.id.btnDisconnect)
+        disconnectButton?.setOnClickListener {
+            val database = FirebaseDatabase.getInstance()
+            val sessionsRef = database.getReference("sessions")
+
+            sessionsRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        return
+                    }
+                    for (snapshot in dataSnapshot.children) {
+                        val sessionCode = snapshot.key
+                        if (sessionCode!!.contains(TestApp.getUserCode())) {
+                            sessionsRef.removeValue()
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }
+    }
+
+    fun whatMyName() {
+        val myNameEditText = findViewById<EditText>(R.id.name_user)
+        myNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // nothing
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                TestApp.sharedPref?.edit()?.putString(TestApp.USER_NAME, s.toString())?.apply()
+            }
+        })
     }
 
     fun goToTestsActivity() {

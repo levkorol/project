@@ -27,7 +27,8 @@
                     android:layout_marginTop="4dp"
                     android:src="@drawable/ic_woman" />
 
-            <TextView
+
+            <EditText
                     android:id="@+id/name_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                     android:src="@drawable/ic_man" />
 
             <TextView
+                    android:id="@+id/partner_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -73,6 +75,7 @@
                     android:textSize="20sp" />
 
             <TextView
+                    android:id="@+id/btnDisconnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

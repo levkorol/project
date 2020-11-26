@@ -14,8 +14,8 @@ class SuccessConnectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_success_connect)
         val goMenuTestActivity = findViewById<TextView>(R.id.buttonGoTests)
-        val goMenuActivity = findViewById<ImageView>(R.id.igoMenuActivity)
-        goMenuActivity.setOnClickListener { goMenu() }
+//        val goMenuActivity = findViewById<ImageView>(R.id.igoMenuActivity)
+//        goMenuActivity.setOnClickListener { goMenu() }
         goMenuTestActivity.setOnClickListener { goMenuTest() }
     }
 

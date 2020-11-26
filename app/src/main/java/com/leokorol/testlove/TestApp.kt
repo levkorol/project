@@ -28,9 +28,13 @@ class TestApp : Application() {
         }
     }
 
+
+
     companion object {
         const val APP_PREFS = "app_prefs"
         const val DEVICE_ID = "DEVICE_ID"
+        const val USER_NAME = "USER_NAME"
+        const val PARTNER_NAME = "PARTNER_NAME"
         const val CODE = "CODE"
         const val SESSiON_CODE = "SESSiON_CODE"
         const val LAST_QUESTION = "LAST_QUESTION"
@@ -45,6 +49,15 @@ class TestApp : Application() {
                 result += str[r.nextInt(str.length)]
             }
             return result
+        }
+
+
+        fun getUserName(): String {
+           return sharedPref?.getString(USER_NAME, "") ?: ""
+        }
+
+        fun getUserCode(): String {
+            return sharedPref?.getString(CODE, "") ?: ""
         }
     }
 }
