@@ -15,17 +15,17 @@ class TestApp : Application() {
 
     private fun init() {
         sharedPref = getSharedPreferences(APP_PREFS, MODE_PRIVATE)
-        val deviceId = UUID.randomUUID().toString().toUpperCase()
-        val code = generateCode()
         val database = FirebaseDatabase.getInstance()
-        val deviceIdRef = database.getReference("queue").child(deviceId)
-        deviceIdRef.setValue(code)
-        if (sharedPref?.getString(DEVICE_ID, "")!!.isEmpty()) {
+        var code = sharedPref?.getString(CODE, "")!!
+        var deviceId = sharedPref?.getString(DEVICE_ID, "")!!
+        if (code.isEmpty() || deviceId.isEmpty()) {
+            code = generateCode()
+            deviceId = UUID.randomUUID().toString().toUpperCase()
+            sharedPref?.edit()?.putString(CODE, code)?.apply()
             sharedPref?.edit()?.putString(DEVICE_ID, deviceId)?.apply()
         }
-        if (sharedPref?.getString(CODE, "")!!.isEmpty()) {
-            sharedPref?.edit()?.putString(CODE, code)?.apply()
-        }
+        val deviceIdRef = database.getReference("queue").child(deviceId)
+        deviceIdRef.setValue(code)
     }
 
 
