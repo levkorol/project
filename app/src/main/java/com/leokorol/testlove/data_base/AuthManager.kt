@@ -1,4 +1,4 @@
-package com.leokorol.testlove.fire_base
+package com.leokorol.testlove.data_base
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -208,9 +208,9 @@ class AuthManager {
     }
 
     val deviceId: String
-        get() = TestApp?.sharedPref?.getString(TestApp.DEVICE_ID, "") ?: ""
+        get() = TestApp.sharedPref?.getString(TestApp.DEVICE_ID, "") ?: ""
     val code: String
-        get() = TestApp?.sharedPref?.getString(TestApp.CODE, "") ?: ""
+        get() = TestApp.sharedPref?.getString(TestApp.CODE, "") ?: ""
 
     companion object {
         val instance = AuthManager()

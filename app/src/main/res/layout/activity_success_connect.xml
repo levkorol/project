@@ -13,7 +13,7 @@
             android:orientation="horizontal">
 
         <ImageView
-                android:id="@+id/cgoMenuActivity"
+                android:id="@+id/sgoMenuActivity"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"

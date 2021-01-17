@@ -2,12 +2,9 @@ package com.leokorol.testlove.activites.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,14 +13,15 @@ import com.google.firebase.database.ValueEventListener
 import com.leokorol.testlove.MenuActivity
 import com.leokorol.testlove.R
 import com.leokorol.testlove.TestApp
-import com.leokorol.testlove.activites.menu.MenuTestsActivity
 import com.leokorol.testlove.activites.results.ResultsActivity
 import com.leokorol.testlove.activites.tests.TestOneQuestions
 import com.leokorol.testlove.activites.tests.TestThreeQuestions
 import com.leokorol.testlove.activites.tests.TestTwoQuestions
 import com.leokorol.testlove.base.IAnswersReceivedListener
-import com.leokorol.testlove.fire_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager
 import com.leokorol.testlove.tests.texts.Results
+import com.leokorol.testlove.utils.replaceActivity
+import kotlinx.android.synthetic.main.activity_tests_menu.*
 import java.util.*
 
 class MenuTestsActivity : AppCompatActivity() {
@@ -39,8 +37,10 @@ class MenuTestsActivity : AppCompatActivity() {
         progressPart1 = findViewById(R.id.tvSessionInfoTest1)
         goMenuActivity = findViewById(R.id.goMenuActivity)
         deleteProgress = findViewById(R.id.tvSessionDeleteTest1)
-        goMenuActivity?.setOnClickListener { goMenu() }
+        //    goMenuActivity?.setOnClickListener { goMenu() }
 
+
+        clickListeners()
 
         AuthManager.instance.setAnswers1ReceivedListener(object : IAnswersReceivedListener {
             override fun answersReceived(
@@ -85,11 +85,12 @@ class MenuTestsActivity : AppCompatActivity() {
         checkLastSession()
     }
 
+
     private fun checkLastSession() {
         val lastSession = TestApp.sharedPref?.getString(TestApp.SESSiON_CODE, "")
         if (!lastSession!!.isEmpty()) {
             val lastQuestion = TestApp.sharedPref?.getInt(TestApp.LAST_QUESTION, 0)
-            progressPart1!!.text = "Текущий прогресс: $lastQuestion/65"
+            tvSessionInfoTest1!!.text = "Текущий прогресс: $lastQuestion/65"
             val database = FirebaseDatabase.getInstance()
             database.reference.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -125,34 +126,42 @@ class MenuTestsActivity : AppCompatActivity() {
         }
     }
 
-    fun goToTestOneTitle(view: View?) {
+    private fun clickListeners() {
+        goMenuActivity?.setOnClickListener { replaceActivity(MenuActivity()) }
+
+        testOneButton.setOnClickListener {
+            goToTestOneTitle()
+        }
+
+        testTwoButton.setOnClickListener {
+            goToTestTwoActivity()
+        }
+
+        testThreeButton.setOnClickListener {
+            goToTestThreeActivity()
+        }
+
+    }
+
+    fun goToTestOneTitle() {
         AuthManager.instance.currentPart = 1
         val intent = Intent(this, TestOneQuestions::class.java)
         startActivity(intent)
     }
 
-    fun goToTestTwoActivity(view: View?) {
+    fun goToTestTwoActivity() {
         AuthManager.instance.currentPart = 2
         val intent = Intent(this, TestTwoQuestions::class.java)
         startActivity(intent)
     }
 
-    fun goToTestThreeActivity(view: View?) {
+    fun goToTestThreeActivity() {
         AuthManager.instance.currentPart = 3
         val intent = Intent(this, TestThreeQuestions::class.java)
         startActivity(intent)
     }
 
-    private fun goMenu() {
-        val intent = Intent(this, MenuActivity::class.java)
-        startActivity(intent)
-    }
 
-    private fun showToast(message: String) {
-        val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
 
     companion object {
         private fun getEqualAnswersCount(
@@ -171,3 +180,38 @@ class MenuTestsActivity : AppCompatActivity() {
         }
     }
 }
+
+//private fun clickListeners() {
+//    goMenuActivity.setOnClickListener { replaceActivity(MenuActivity()) }
+//
+//    testOneButton.setOnClickListener {
+//        goToTestOneTitle()
+//    }
+//
+//    testTwoButton.setOnClickListener {
+//        goToTestTwoActivity()
+//    }
+//
+//    testThreeButton.setOnClickListener {
+//        goToTestThreeActivity()
+//    }
+//
+//}
+
+//private fun goToTestOneTitle() {
+//    AuthManager.instance.currentPart = 1
+//    val intent = Intent(this, TestOneQuestions::class.java)
+//    startActivity(intent)
+//}
+//
+//private fun goToTestTwoActivity() {
+//    AuthManager.instance.currentPart = 2
+//    val intent = Intent(this, TestTwoQuestions::class.java)
+//    startActivity(intent)
+//}
+//
+//private fun goToTestThreeActivity() {
+//    AuthManager.instance.currentPart = 3
+//    val intent = Intent(this, TestThreeQuestions::class.java)
+//    startActivity(intent)
+//}

@@ -52,10 +52,7 @@ class AnswerVariantAdapter(private val _answerVariants: Array<AnswerVariant>) :
 
     class AnswerVariantViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var checkBoxVariant: CheckBox
-
-        init {
-            checkBoxVariant = itemView.findViewById<View>(R.id.checkBoxVariant) as CheckBox
-        }
+        var checkBoxVariant: CheckBox =
+            itemView.findViewById<View>(R.id.checkBoxVariant) as CheckBox
     }
 }

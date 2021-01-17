@@ -17,12 +17,6 @@ class SplashActivity : AppCompatActivity() {
         mTimerTask = MyTimerTask()
         timer!!.schedule(mTimerTask, 2000)
 
-//        mStop.setOnClickListener(new OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-
-//            }
-//        });
     }
 
     internal inner class MyTimerTask : TimerTask() {

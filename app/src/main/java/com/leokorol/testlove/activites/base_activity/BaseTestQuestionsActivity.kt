@@ -13,10 +13,11 @@ import com.leokorol.testlove.R
 import com.leokorol.testlove.TestApp
 import com.leokorol.testlove.activites.menu.MenuTestsActivity
 import com.leokorol.testlove.activites.results.WaitForPartner
-import com.leokorol.testlove.fire_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager
 import com.leokorol.testlove.model.AnswerVariant
 import com.leokorol.testlove.tests.recycler_view.AnswerVariantAdapter
 import com.leokorol.testlove.tests.texts.QuestionWithVariants
+
 
 open class BaseTestQuestionsActivity(
     private val _questions: Array<QuestionWithVariants>,
@@ -27,18 +28,30 @@ open class BaseTestQuestionsActivity(
     private var _recyclerView: RecyclerView? = null
     private var _textViewQuestionText: TextView? = null
     private var _textViewNumberQuestion: TextView? = null
-    private var _allAnswerVariants: Array<Array<AnswerVariant>>
+    private lateinit var _allAnswerVariants: Array<Array<AnswerVariant>>
     private var _currentQuestionIndex = 0
     private val _currentPart = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(_layoutId)
+
+//        _allAnswerVariants = arrayOfNulls(_questions.size)
+//        for (iQuestion in 0 until _questions.size) {
+//            val answerVariants: Array<String> = _questions[iQuestion].answerVariants
+//            _allAnswerVariants[iQuestion] = arrayOfNulls(answerVariants.size)
+//
+//            for (iAnswer in answerVariants.indices) {
+//                _allAnswerVariants[iQuestion]?.set(iAnswer, AnswerVariant(answerVariants[iAnswer]))
+//            }
+//        }
+
         _recyclerView = findViewById<View>(R.id.recyclerView) as RecyclerView
         _textViewQuestionText = findViewById<View>(R.id.textViewQuestionText) as TextView
         _textViewNumberQuestion = findViewById<View>(R.id.textViewNumberQuestion) as TextView
         val llm = LinearLayoutManager(this)
         _recyclerView!!.layoutManager = llm
         goToQuestion(0)
+
     }
 
     fun goToMenuActivity(view: View?) {
@@ -47,10 +60,10 @@ open class BaseTestQuestionsActivity(
     }
 
     private val countOfCheckedAnswers: Int
-        private get() {
+        get() {
             var result = 0
-            for (i in 0 until _allAnswerVariants[_currentQuestionIndex].size) {
-                if (_allAnswerVariants[_currentQuestionIndex][i]!!.isChecked) {
+            for (element in _allAnswerVariants[_currentQuestionIndex]!!) {
+                if (element?.isChecked == true) {
                     result++
                 }
             }
@@ -95,15 +108,11 @@ open class BaseTestQuestionsActivity(
     }
 
     init {
-//        _allAnswerVariants = arrayOfNulls(_questions.size)
-        _allAnswerVariants = emptyArray()
+        _allAnswerVariants = Array(_questions.size) { emptyArray() }
         for (iQuestion in _questions.indices) {
             val answerVariants = _questions[iQuestion].answerVariants
-//            _allAnswerVariants[iQuestion] = arrayOfNulls(answerVariants.size)
-            _allAnswerVariants[iQuestion] = emptyArray()
-            for (iAnswer in answerVariants.indices) {
-                _allAnswerVariants[iQuestion][iAnswer] = AnswerVariant(answerVariants[iAnswer])
-            }
+            _allAnswerVariants[iQuestion] =
+                Array(answerVariants.size) { i -> AnswerVariant(answerVariants[i]) }
         }
     }
 }

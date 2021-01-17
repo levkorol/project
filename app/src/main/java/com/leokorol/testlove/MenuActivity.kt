@@ -19,7 +19,7 @@ import com.leokorol.testlove.activites.menu.InterestingActivity
 import com.leokorol.testlove.activites.menu.MenuTestsActivity
 import com.leokorol.testlove.activites.menu.TogetherEnterNameActivity
 import com.leokorol.testlove.activites.menu.connect.ConnectActivity
-import com.leokorol.testlove.fire_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager
 
 class MenuActivity : AppCompatActivity() {
 
@@ -44,9 +44,9 @@ class MenuActivity : AppCompatActivity() {
         setupDisconnectButton()
     }
 
-    fun setupDisconnectButton() {
+    private fun setupDisconnectButton() {
         disconnectButton = findViewById(R.id.btnDisconnect)
-        disconnectButton?.setOnClickListener {
+        disconnectButton.setOnClickListener {
             val database = FirebaseDatabase.getInstance()
             val sessionsRef = database.getReference("sessions")
 
@@ -68,7 +68,7 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-    fun whatMyName() {
+    private fun whatMyName() {
         val myNameEditText = findViewById<EditText>(R.id.name_user)
         myNameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -86,7 +86,7 @@ class MenuActivity : AppCompatActivity() {
         })
     }
 
-    fun goToTestsActivity() {
+    private fun goToTestsActivity() {
         //  if (AuthManager.getInstance().getIsConnectedToPartner()) { //todo закрыть доступ если не подсоеденены
         val intent = Intent(this, MenuTestsActivity::class.java)
         this.startActivity(intent)
@@ -117,12 +117,12 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-    fun goInteresting() {
+    private fun goInteresting() {
         val intent = Intent(this, InterestingActivity::class.java)
         startActivity(intent)
     }
 
-    fun goTogetherActivity() {
+    private fun goTogetherActivity() {
         val intent = Intent(this, TogetherEnterNameActivity::class.java)
         startActivity(intent)
     }

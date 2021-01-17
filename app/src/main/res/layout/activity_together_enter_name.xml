@@ -127,7 +127,7 @@
                 android:textSize="12sp" />
 
         <Button
-                android:id="@+id/button11"
+                android:id="@+id/buttonOk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="75dp"

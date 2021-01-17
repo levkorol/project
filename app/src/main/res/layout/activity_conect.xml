@@ -72,11 +72,11 @@
                     tools:text="4134134" />
 
             <ImageView
+                    android:id="@+id/sendCodeOnClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.2"
-                    android:onClick="sendCodeOnClick"
                     android:src="@drawable/ic_share" />
         </LinearLayout>
 
@@ -126,7 +126,7 @@
                 android:textSize="12sp" />
 
         <Button
-                android:id="@+id/button11"
+                android:id="@+id/buttonOk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="75dp"
@@ -136,7 +136,6 @@
                 android:background="@drawable/btn_next"
                 android:fontFamily="@font/yeseva_one_regular"
                 android:gravity="center"
-                android:onClick="okBtnOnClick"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Подтвердить"

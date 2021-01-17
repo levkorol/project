@@ -2,74 +2,70 @@ package com.leokorol.testlove.activites.menu.connect
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leokorol.testlove.MenuActivity
 import com.leokorol.testlove.R
 import com.leokorol.testlove.base.ISimpleListener
-import com.leokorol.testlove.fire_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager
+import com.leokorol.testlove.utils.isConnectedToInternet
+import com.leokorol.testlove.utils.replaceActivity
+import com.leokorol.testlove.utils.showToast
+import kotlinx.android.synthetic.main.activity_conect.*
 
 class ConnectActivity : AppCompatActivity() {
-    private lateinit var _textViewSelfCode: TextView
-    private lateinit var _editTextPartnerCode: EditText
-    private lateinit var _textViewInfo: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conect)
-        _textViewSelfCode = findViewById(R.id.connect_textViewSelfCode)
-        _editTextPartnerCode = findViewById(R.id.connect_editTextPartnerCode)
-        _textViewInfo = findViewById(R.id.textViewInfo)
-        _textViewSelfCode.setText(AuthManager.instance.code)
-        val goMenuActivity = findViewById<ImageView>(R.id.cgoMenuActivity)
-        goMenuActivity.setOnClickListener { goMenu() }
+
+        clickListeners()
+
+        connect_textViewSelfCode.text = AuthManager.instance.code
 
         AuthManager.instance.setPartnerConnectedListener(object : ISimpleListener {
             override fun eventOccured() {
-                _textViewInfo.setText("Вы соединены с партнёром, можете проходить тест")
+                textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
                 showToast("Код подтверждён")
-                goSuccess()
+                replaceActivity(SuccessConnectActivity())
             }
 
         })
         if (AuthManager.instance.isConnectedToPartner) {
-            _textViewInfo.setText("Вы соединены с партнёром, можете проходить тест")
-            goSuccess()
+            textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
+            replaceActivity(SuccessConnectActivity())
         }
     }
 
-    private fun goSuccess() {
-        val intent = Intent(this, SuccessConnectActivity::class.java)
-        startActivity(intent)
+    private fun clickListeners() {
+        cgoMenuActivity.setOnClickListener { replaceActivity(MenuActivity()) }
+
+        sendCodeOnClick.setOnClickListener { sendTextByApp(AuthManager.instance.code) }
+
+        buttonOk.setOnClickListener {
+            okBtnOnClick()
+        }
     }
 
-    fun okBtnOnClick(view: View?) {
-        AuthManager.instance.tryMoveToSession(
-            _editTextPartnerCode!!.text.toString(),
-            object : ISimpleListener {
-                override fun eventOccured() {
-                    hideVirtualKeyboard()
+
+    private fun okBtnOnClick() {
+        if (isConnectedToInternet()) {
+            AuthManager.instance.tryMoveToSession(
+                connect_editTextPartnerCode.text.toString(),
+                object : ISimpleListener {
+                    override fun eventOccured() {
+                        hideVirtualKeyboard()
+                    }
+                },
+                object : ISimpleListener {
+                    override fun eventOccured() {
+                        showToast("Партнера с таким кодом не существует")
+                    }
                 }
-            },
-            null
-        )
-    }
-
-    private fun hideVirtualKeyboard() {
-        val view = this.currentFocus
-        if (view != null) {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            )
+        } else {
+            showToast("Отсутствует подключение к интернету")
         }
-    }
-
-    fun sendCodeOnClick(view: View?) {
-        sendTextByApp(AuthManager.instance.code)
     }
 
     private fun sendTextByApp(text: String) {
@@ -80,14 +76,12 @@ class ConnectActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(sharingIntent, "Отправить код партнёру"))
     }
 
-    private fun showToast(message: String) {
-        val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
 
-    private fun goMenu() {
-        val intent = Intent(this, MenuActivity::class.java)
-        startActivity(intent)
+    private fun hideVirtualKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
