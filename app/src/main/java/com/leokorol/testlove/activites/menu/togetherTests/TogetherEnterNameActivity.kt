@@ -1,9 +1,9 @@
-package com.leokorol.testlove.activites.menu
+package com.leokorol.testlove.activites.menu.togetherTests
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.leokorol.testlove.MenuActivity
 import com.leokorol.testlove.R
+import com.leokorol.testlove.activites.menu.MenuLauncherActivity
 import com.leokorol.testlove.utils.replaceActivity
 import kotlinx.android.synthetic.main.activity_together_enter_name.*
 
@@ -16,6 +16,6 @@ class TogetherEnterNameActivity : AppCompatActivity() {
     }
 
     private fun clickListeners() {
-        tgoMenuActivity.setOnClickListener { replaceActivity(MenuActivity()) }
+        tgoMenuActivity.setOnClickListener { replaceActivity(MenuLauncherActivity()) }
     }
 }

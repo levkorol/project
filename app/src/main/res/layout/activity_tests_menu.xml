@@ -80,7 +80,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
-                    android:text="Текущий прогресс: "
+                    android:text="Текущий прогресс: 0"
                     android:textColor="@color/purpul" />
 
             <TextView
@@ -146,7 +146,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
-                    android:text="Текущий прогресс:"
+                    android:text="Текущий прогресс: 0"
                     android:textColor="@color/purpul" />
 
             <TextView
@@ -210,7 +210,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
-                    android:text="Текущий прогресс: "
+                    android:text="Текущий прогресс: 0"
                     android:textColor="@color/purpul" />
 
             <TextView

@@ -26,6 +26,7 @@ class TestApp : Application() {
         }
         val deviceIdRef = database.getReference("queue").child(deviceId)
         deviceIdRef.setValue(code)
+        database.getReference(code).child("partner").setValue("")
     }
 
 
@@ -40,6 +41,7 @@ class TestApp : Application() {
         const val LAST_QUESTION = "LAST_QUESTION"
         const val LAST_PART = "LAST_PART"
         private var context: Context? = null
+
         var sharedPref: SharedPreferences? = null
         private fun generateCode(): String {
             var result = ""

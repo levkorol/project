@@ -5,8 +5,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.leokorol.testlove.TestApp
-import com.leokorol.testlove.base.IAnswersReceivedListener
-import com.leokorol.testlove.base.ISimpleListener
+import com.leokorol.testlove.base_listeners.IAnswersReceivedListener
+import com.leokorol.testlove.base_listeners.ISimpleListener
 import com.leokorol.testlove.model.AnswerVariant
 import java.util.*
 
@@ -48,18 +48,6 @@ class AuthManager {
                 ?.putInt(TestApp.LAST_PART, _currentPart)?.apply()
         }
 
-    // удалить если все ок
-    //    public void resetSession() {
-    //        _deviceId = java.util.UUID.randomUUID().toString().toUpperCase();
-    //        _code = generateCode();
-    //        _sessionCode = null;
-    //        FirebaseDatabase database = FirebaseDatabase.getInstance();
-    //        DatabaseReference deviceIdRef = database.getReference("queue").child(_deviceId);
-    //        deviceIdRef.setValue(_code);
-    //        _isInQueue = true;
-    //        _isConnectedToPartner = false;
-    //        _currentPart = 0;
-    //    }
     fun sendAnswers(answers: Array<Array<AnswerVariant>>, answersBranch: String?) {
         val selfAnswers: MutableList<List<Any>> = ArrayList()
         val database = FirebaseDatabase.getInstance()

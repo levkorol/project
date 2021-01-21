@@ -8,5 +8,6 @@ class TestOneQuestions : BaseTestQuestionsActivity(
     Questions.Part1,
     R.layout.activity_test_one,
     R.drawable.onetitlebg,
-    ANSWERS
+    ANSWERS,
+    1
 )

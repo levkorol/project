@@ -8,5 +8,6 @@ class TestTwoQuestions : BaseTestQuestionsActivity(
     Questions.Part2,
     R.layout.activity_test_two_questions,
     R.drawable.twotitlebg,
-    ANSWERS_2
+    ANSWERS_2,
+    3
 )

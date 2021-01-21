@@ -8,5 +8,6 @@ class TestThreeQuestions : BaseTestQuestionsActivity(
     Questions.Part3,
     R.layout.activity_test_three_questions,
     R.drawable.threetitlebg,
-    ANSWERS_3
+    ANSWERS_3,
+    2
 )

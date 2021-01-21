@@ -3,8 +3,8 @@ package com.leokorol.testlove.activites.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.leokorol.testlove.MenuActivity
 import com.leokorol.testlove.R
+import com.leokorol.testlove.activites.menu.MenuLauncherActivity
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
@@ -21,8 +21,10 @@ class SplashActivity : AppCompatActivity() {
 
     internal inner class MyTimerTask : TimerTask() {
         override fun run() {
-            val intent = Intent(this@SplashActivity, MenuActivity::class.java)
+            finish()
+            val intent = Intent(this@SplashActivity, MenuLauncherActivity::class.java)
             startActivity(intent)
+
         }
     }
 }

@@ -14,10 +14,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".activites.menu.connect.SuccessConnectActivity"></activity>
-        <activity android:name=".activites.menu.connect.SuccessfullConnectedActivity" />
-        <activity android:name=".activites.menu.TogetherEnterNameActivity" />
-        <activity android:name=".activites.menu.InterestingActivity" />
+        <activity android:name=".activites.menu.connect.SuccessConnectActivity" />
+        <activity android:name=".activites.menu.togetherTests.TogetherEnterNameActivity" />
+        <activity android:name=".activites.menu.intresting.InterestingActivity" />
         <activity android:name=".activites.menu.connect.ConnectActivity" />
         <activity android:name=".activites.splash.SplashActivity">
             <intent-filter>
@@ -27,12 +26,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activites.results.ResultsActivity" />
-        <activity android:name=".activites.results.WaitForPartner" />
         <activity android:name=".activites.tests.TestThreeQuestions" />
         <activity android:name=".activites.tests.TestTwoQuestions" />
         <activity android:name=".activites.tests.TestOneQuestions" />
         <activity android:name=".activites.menu.MenuTestsActivity" />
-        <activity android:name=".MenuActivity">
+        <activity android:name=".activites.menu.MenuLauncherActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

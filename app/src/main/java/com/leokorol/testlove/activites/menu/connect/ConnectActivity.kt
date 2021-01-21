@@ -4,10 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.leokorol.testlove.MenuActivity
 import com.leokorol.testlove.R
-import com.leokorol.testlove.base.ISimpleListener
+import com.leokorol.testlove.activites.menu.MenuLauncherActivity
+import com.leokorol.testlove.base_listeners.ISimpleListener
 import com.leokorol.testlove.data_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager2
 import com.leokorol.testlove.utils.isConnectedToInternet
 import com.leokorol.testlove.utils.replaceActivity
 import com.leokorol.testlove.utils.showToast
@@ -38,7 +39,7 @@ class ConnectActivity : AppCompatActivity() {
     }
 
     private fun clickListeners() {
-        cgoMenuActivity.setOnClickListener { replaceActivity(MenuActivity()) }
+        cgoMenuActivity.setOnClickListener { replaceActivity(MenuLauncherActivity()) }
 
         sendCodeOnClick.setOnClickListener { sendTextByApp(AuthManager.instance.code) }
 
@@ -50,6 +51,7 @@ class ConnectActivity : AppCompatActivity() {
 
     private fun okBtnOnClick() {
         if (isConnectedToInternet()) {
+            AuthManager2.connectToPartner(connect_editTextPartnerCode.text.toString())
             AuthManager.instance.tryMoveToSession(
                 connect_editTextPartnerCode.text.toString(),
                 object : ISimpleListener {
