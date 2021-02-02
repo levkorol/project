@@ -1,5 +1,6 @@
 package com.leokorol.testlove.activites.base_activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -8,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leokorol.testlove.R
 import com.leokorol.testlove.TestApp
+import com.leokorol.testlove.activites.menu.MenuLauncherActivity
 import com.leokorol.testlove.activites.menu.MenuTestsActivity
-import com.leokorol.testlove.data_base.AuthManager
 import com.leokorol.testlove.data_base.AuthManager2
 import com.leokorol.testlove.model.AnswerVariant
 import com.leokorol.testlove.tests.recycler_view.AnswerVariantAdapter
@@ -23,13 +24,15 @@ open class BaseTestQuestionsActivity(
     private val _layoutId: Int,
     private val _backgroundResource: Int,
     private val _answersBranch: String,
-    private val numberTest: Int
+    private val numberTest: Int,
+    private val lastQuestion: String,
 ) : AppCompatActivity() {
     private lateinit var _recyclerView: RecyclerView
     private lateinit var _textViewQuestionText: TextView
     private lateinit var _textViewNumberQuestion: TextView
     private lateinit var _allAnswerVariants: Array<Array<AnswerVariant>>
     private var _currentQuestionIndex = 0
+
     private val countOfCheckedAnswers: Int
         get() {
             var result = 0
@@ -50,7 +53,11 @@ open class BaseTestQuestionsActivity(
         val llm = LinearLayoutManager(this)
         _recyclerView.layoutManager = llm
 
+
+        _currentQuestionIndex = TestApp.sharedPref?.getInt(lastQuestion, 0) ?: 0
+
         goToQuestion(0)
+
 
     }
 
@@ -73,16 +80,16 @@ open class BaseTestQuestionsActivity(
             }
             AuthManager2.saveAnswer(numberTest, _currentQuestionIndex, answerSet)
             if (_currentQuestionIndex == _questions.size - 1) {
-                AuthManager.instance.sendAnswers(_allAnswerVariants, _answersBranch)
+                //AuthManager.instance.sendAnswers(_allAnswerVariants, _answersBranch)
                 AuthManager2.copyAnswersFromPrefsToDatabase(numberTest, _questions.size)
-//                val intent = Intent(this, WaitForPartner::class.java)
-//                intent.putExtra("Background", _backgroundResource)
-//                startActivity(intent)
+                val intent = Intent(this, MenuLauncherActivity::class.java)
+                intent.putExtra("Background", _backgroundResource)
+                startActivity(intent) //todo активити с информацией после завершения
+
                 //todo database.addCompleteListeners{ }  слушать ответы
             } else {
                 _currentQuestionIndex++
-                TestApp.sharedPref?.edit()?.putInt(TestApp.LAST_QUESTION, _currentQuestionIndex)
-                    ?.apply()
+                TestApp.sharedPref?.edit()?.putInt(lastQuestion, _currentQuestionIndex)?.apply()
                 goToQuestion(_currentQuestionIndex)
             }
         }

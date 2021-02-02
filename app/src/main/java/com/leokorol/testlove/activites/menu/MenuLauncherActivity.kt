@@ -19,10 +19,13 @@ import com.leokorol.testlove.activites.menu.connect.ConnectActivity
 import com.leokorol.testlove.activites.menu.intresting.InterestingActivity
 import com.leokorol.testlove.activites.menu.togetherTests.TogetherEnterNameActivity
 import com.leokorol.testlove.data_base.AuthManager
+import com.leokorol.testlove.data_base.AuthManager2
 import com.leokorol.testlove.utils.replaceActivity
 import kotlinx.android.synthetic.main.activity_menu.*
 
 class MenuLauncherActivity : AppCompatActivity() {
+
+    val database = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,33 +36,35 @@ class MenuLauncherActivity : AppCompatActivity() {
         whatMyName()
         setupDisconnectButton()
 
-        visiblePartner(true) // todo сделать видимым если партнер подключен
+        AuthManager2.isConnectedPartner(TestApp.getUserCode(), {
+            visiblePartner(true)
+        }, {
+            visiblePartner(false)
+        })
     }
 
 
     private fun setupDisconnectButton() {    //todo отсоеденить партнера и удалить все сессии в тестах
 
-        btnDisconnect.setOnClickListener {
-            val database = FirebaseDatabase.getInstance()
-            val sessionsRef = database.getReference("sessions")
-
-            visiblePartner(false)
-
-            sessionsRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (!dataSnapshot.exists()) {
-                        return
-                    }
-                    for (snapshot in dataSnapshot.children) {
-                        val sessionCode = snapshot.key
-                        if (sessionCode!!.contains(TestApp.getUserCode())) {
-                            sessionsRef.removeValue()
-                        }
-                    }
+        val refMyConnect = database.getReference(TestApp.getUserCode()).child("partner")
+        refMyConnect.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    visiblePartner(false)
                 }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+            override fun onCancelled(databaseError: DatabaseError) {}
+        }
+        )
+
+        btnDisconnect.setOnClickListener {
+
+            refMyConnect.removeValue()
+            val refPartnerConnect = database.getReference(TestApp.getPartnerCode()).child("partner")
+            refPartnerConnect.removeValue()
+
+
         }
     }
 

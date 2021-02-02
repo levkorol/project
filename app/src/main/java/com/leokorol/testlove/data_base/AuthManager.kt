@@ -198,7 +198,7 @@ class AuthManager {
     val deviceId: String
         get() = TestApp.sharedPref?.getString(TestApp.DEVICE_ID, "") ?: ""
     val code: String
-        get() = TestApp.sharedPref?.getString(TestApp.CODE, "") ?: ""
+        get() = TestApp.sharedPref?.getString(TestApp.MY_CODE, "") ?: ""
 
     companion object {
         val instance = AuthManager()

@@ -17,7 +17,6 @@ import com.leokorol.testlove.base_listeners.IAnswersReceivedListener
 import com.leokorol.testlove.data_base.AuthManager
 import com.leokorol.testlove.tests.texts.Results
 import com.leokorol.testlove.utils.replaceActivity
-import com.leokorol.testlove.utils.showToast
 import kotlinx.android.synthetic.main.activity_tests_menu.*
 import java.util.*
 
@@ -27,7 +26,7 @@ class MenuTestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_tests_menu)
-
+        deleteProgressListeners()
         clickListeners()
         checkLastSession()
 
@@ -75,13 +74,20 @@ class MenuTestsActivity : AppCompatActivity() {
 
     }
 
-    private fun deleteProgress(lastQuestion: String) {
+    private fun deleteProgressListeners() {
         tvSessionDeleteTest1.setOnClickListener {
-            if (lastQuestion.isEmpty()) {
-                showToast("Прогресс пустой")
-            } else {
+            TestApp.sharedPref?.edit()?.putInt(TestApp.LAST_QUESTION_1, 0)?.apply()
+            tvSessionInfoTest1.text = "Текущий прогресс: 0/60"
+        }
 
-            }
+        tvSessionDeleteTest2.setOnClickListener {
+            TestApp.sharedPref?.edit()?.putInt(TestApp.LAST_QUESTION_2, 0)?.apply()
+            tvSessionInfoTest2.text = "Текущий прогресс: 0/45"
+        }
+
+        tvSessionDeleteTest3.setOnClickListener {
+            TestApp.sharedPref?.edit()?.putInt(TestApp.LAST_QUESTION_3, 0)?.apply()
+            tvSessionInfoTest3.text = "Текущий прогресс: 0/40"
         }
     }
 
@@ -91,14 +97,13 @@ class MenuTestsActivity : AppCompatActivity() {
 
         if (lastSession!!.isNotEmpty()) {
 
-            val lastQuestion = TestApp.sharedPref?.getInt(TestApp.LAST_QUESTION, 0)
+            val lastQuestion1 = TestApp.sharedPref?.getInt(TestApp.LAST_QUESTION_1, 0)
+            val lastQuestion2 = TestApp.sharedPref?.getInt(TestApp.LAST_QUESTION_2, 0)
+            val lastQuestion3 = TestApp.sharedPref?.getInt(TestApp.LAST_QUESTION_3, 0)
 
-            tvSessionInfoTest1.text = "Текущий прогресс: $lastQuestion/60"
-            tvSessionInfoTest2.text =
-                "Текущий прогресс: $lastQuestion/45"  //todo записывает общее значение
-            tvSessionInfoTest3.text = "Текущий прогресс: $lastQuestion/40"
-
-            tvSessionDeleteTest1.setOnClickListener { }
+            tvSessionInfoTest1.text = "Текущий прогресс: $lastQuestion1/60"
+            tvSessionInfoTest2.text = "Текущий прогресс: $lastQuestion2/45"
+            tvSessionInfoTest3.text = "Текущий прогресс: $lastQuestion3/40"
 
             val database = FirebaseDatabase.getInstance()
             database.reference.addValueEventListener(object : ValueEventListener {

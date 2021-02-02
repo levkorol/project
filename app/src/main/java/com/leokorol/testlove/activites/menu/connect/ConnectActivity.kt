@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.leokorol.testlove.R
+import com.leokorol.testlove.TestApp
 import com.leokorol.testlove.activites.menu.MenuLauncherActivity
 import com.leokorol.testlove.base_listeners.ISimpleListener
 import com.leokorol.testlove.data_base.AuthManager
@@ -24,17 +25,36 @@ class ConnectActivity : AppCompatActivity() {
 
         connect_textViewSelfCode.text = AuthManager.instance.code
 
-        AuthManager.instance.setPartnerConnectedListener(object : ISimpleListener {
-            override fun eventOccured() {
-                textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
-                showToast("Код подтверждён")
-                replaceActivity(SuccessConnectActivity())
+//        AuthManager.instance.setPartnerConnectedListener(object : ISimpleListener {
+//            override fun eventOccured() {
+//                textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
+//                showToast("Код подтверждён")
+//                replaceActivity(SuccessConnectActivity())
+//            }
+//
+//        })
+//        if (AuthManager.instance.isConnectedToPartner) {
+//            textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
+//            replaceActivity(SuccessConnectActivity())
+//        }
+
+        AuthManager2.setPartnerConnectedListener {
+            textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
+            showToast("Код подтверждён")
+            replaceActivity(SuccessConnectActivity())
+
+
+            AuthManager2.setTest1Listener { my, partner ->
+                showToast("Вы оба пришли тест 1. Можете посмотреть результаты в результатах")
             }
 
-        })
-        if (AuthManager.instance.isConnectedToPartner) {
-            textViewInfo.text = "Вы соединены с партнёром, можете проходить тест"
-            replaceActivity(SuccessConnectActivity())
+            AuthManager2.setTest2Listener { my, partner ->
+                showToast("Вы оба пришли тест 2. Можете посмотреть результаты в результатах")
+            }
+
+            AuthManager2.setTest3Listener { my, partner ->
+                showToast("Вы оба пришли тест 3. Можете посмотреть результаты в результатах")
+            }
         }
     }
 
@@ -57,6 +77,7 @@ class ConnectActivity : AppCompatActivity() {
                 object : ISimpleListener {
                     override fun eventOccured() {
                         hideVirtualKeyboard()
+                        TestApp.savePartnerCode(connect_editTextPartnerCode.text.toString())
                     }
                 },
                 object : ISimpleListener {
