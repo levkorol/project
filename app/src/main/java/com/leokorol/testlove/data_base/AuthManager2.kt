@@ -7,7 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.leokorol.testlove.TestApp
 
 object AuthManager2 {
-
+    //todo
     private var isInitialised = false
     private lateinit var partnerConnectedListener: () -> Unit
 
