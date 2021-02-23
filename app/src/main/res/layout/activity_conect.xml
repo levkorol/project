@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/_bg_menu"
         android:orientation="vertical"
-        tools:context=".activites.menu.ConnectActivity">
+        tools:context=".activites.menu.connect.ConnectActivity">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -19,11 +19,11 @@
                 android:orientation="horizontal">
 
             <ImageView
+                    android:id="@+id/cgoMenuActivity"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
-                    android:onClick="goMenu"
                     android:src="@drawable/ic_menu" />
 
             <TextView
@@ -72,11 +72,11 @@
                     tools:text="4134134" />
 
             <ImageView
+                    android:id="@+id/sendCodeOnClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.2"
-                    android:onClick="sendCodeOnClick"
                     android:src="@drawable/ic_share" />
         </LinearLayout>
 
@@ -126,7 +126,7 @@
                 android:textSize="12sp" />
 
         <Button
-                android:id="@+id/button11"
+                android:id="@+id/buttonOk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="75dp"
@@ -136,7 +136,6 @@
                 android:background="@drawable/btn_next"
                 android:fontFamily="@font/yeseva_one_regular"
                 android:gravity="center"
-                android:onClick="okBtnOnClick"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Подтвердить"
