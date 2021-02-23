@@ -61,7 +61,6 @@ object AuthManager2 {
         notConnectedToPartner: () -> Unit
     ) {
 
-        val database = FirebaseDatabase.getInstance()
         val sessionsRef = database.getReference(myCode).child("partner")
         sessionsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -81,8 +80,6 @@ object AuthManager2 {
     }
 
     fun subscribePartnerTestResults(partnerCode: String) {
-
-        val database = FirebaseDatabase.getInstance()
 
         val test1Ref = database.getReference(partnerCode).child("test_0")
         val test2Ref = database.getReference(partnerCode).child("test_1")
@@ -122,8 +119,6 @@ object AuthManager2 {
 
 
     fun subscribeMyTestResults(myCode: String) {
-
-        val database = FirebaseDatabase.getInstance()
 
         val test1Ref = database.getReference(myCode).child("test_0")
         val test2Ref = database.getReference(myCode).child("test_1")

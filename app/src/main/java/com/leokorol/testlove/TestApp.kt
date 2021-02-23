@@ -45,7 +45,7 @@ class TestApp : Application() {
         }
         val deviceIdRef = database.getReference("queue").child(deviceId)
         deviceIdRef.setValue(code)
-        //database.getReference(code).child("partner").setValue("")
+
         AuthManager2.initPartnerConnectedListener(code)
     }
 

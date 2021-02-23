@@ -7,12 +7,10 @@ import com.google.firebase.database.ValueEventListener
 import com.leokorol.testlove.TestApp
 import com.leokorol.testlove.base_listeners.IAnswersReceivedListener
 import com.leokorol.testlove.base_listeners.ISimpleListener
-import com.leokorol.testlove.model.AnswerVariant
 import java.util.*
 
 class AuthManager {
-    //    private String _deviceId;
-    //    private String _code;
+
     private var _sessionCode: String? = null
     var isInQueue = false
         private set
@@ -24,21 +22,6 @@ class AuthManager {
     private var _answers1ReceivedListener: IAnswersReceivedListener? = null
     private var _answers2ReceivedListener: IAnswersReceivedListener? = null
     private var _answers3ReceivedListener: IAnswersReceivedListener? = null
-    fun setPartnerConnectedListener(listener: ISimpleListener?) {
-        _partnerConnectedListener = listener
-    }
-
-    fun setAnswers1ReceivedListener(listener: IAnswersReceivedListener?) {
-        _answers1ReceivedListener = listener
-    }
-
-    fun setAnswers2ReceivedListener(listener: IAnswersReceivedListener?) {
-        _answers2ReceivedListener = listener
-    }
-
-    fun setAnswers3ReceivedListener(listener: IAnswersReceivedListener?) {
-        _answers3ReceivedListener = listener
-    }
 
     var currentPart: Int
         get() = _currentPart
@@ -48,28 +31,6 @@ class AuthManager {
                 ?.putInt(TestApp.LAST_PART, _currentPart)?.apply()
         }
 
-    fun sendAnswers(answers: Array<Array<AnswerVariant>>, answersBranch: String?) {
-        val selfAnswers: MutableList<List<Any>> = ArrayList()
-        val database = FirebaseDatabase.getInstance()
-        val sessionsRef = database.getReference("sessions")
-        val sessionRef = sessionsRef.child(_sessionCode!!)
-        val answersRef = sessionRef.child(answersBranch!!)
-        val idRef = answersRef.child(deviceId)
-        for (iQuestion in answers.indices) {
-            selfAnswers.add(getAnswerNumbers(answers[iQuestion]))
-        }
-        idRef.setValue(selfAnswers)
-    }
-
-    private fun getAnswerNumbers(answers: Array<AnswerVariant>): List<Any> {
-        val result: MutableList<Any> = ArrayList()
-        for (i in answers.indices) {
-            if (answers[i].isChecked) {
-                result.add(i)
-            }
-        }
-        return result
-    }
 
     fun subscribeToSessions() {
         if (_isSubscribedToSessions) {
